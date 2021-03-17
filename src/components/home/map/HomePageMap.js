@@ -91,7 +91,7 @@ function HomePageMap(props) {
     return (
       <>
         <GoogleMapReact 
-            bootstrapURLKeys={{ key: 'AIzaSyDrQozQbHcgDzFM0mGzCEmhFDCaBiqn1XU' }}
+            bootstrapURLKeys={{ key: 'API-KEY' }}
             defaultCenter={{lat: 40.1872,lng: 44.5152}}
             defaultZoom={12}
             hoverDistance={20}
