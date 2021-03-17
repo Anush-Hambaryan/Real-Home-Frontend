@@ -101,6 +101,7 @@ function HomePage(props) {
             dispatchParams({property: property, value: initialState[property] });
         }
         setSelectedAmenities(0);
+        setSearch(true)
     }
     
     const theme = useTheme();
@@ -206,7 +207,7 @@ function HomePage(props) {
                     </>}
             </Paper> 
         
-            <HomePageBody search={search} params={ search && params} />
+            <HomePageBody params={ search ? params : undefined} />
         </>
     )
 }

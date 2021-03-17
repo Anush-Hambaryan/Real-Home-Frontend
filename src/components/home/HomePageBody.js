@@ -32,6 +32,7 @@ function HomePageBody(props) {
   };
   
     useEffect(() => {
+      console.log("home-page-body")
       if (cacheContext.cacheReset) CACHE = {}
       if (props.params ) params.current = props.params 
       let queryString = '';
@@ -65,7 +66,7 @@ function HomePageBody(props) {
           }
         });
       }
-    }, [props.search, cacheContext.cacheReset])
+    }, [props.params, cacheContext.cacheReset])
     
 
     return (

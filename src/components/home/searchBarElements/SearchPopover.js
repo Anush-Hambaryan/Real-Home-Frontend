@@ -91,9 +91,10 @@ function SearchPopover(props) {
                 }}
                 PaperProps={ {style: {position: 'sticky', 
                 width: props.name==="More" && matchesLarge ? 270 : 
-                            props.name==="More" ? 450 : 
+                            props.name==="More" ? 530 : 
                             props.name==="Home Type & Location" || props.name==="Price"? 200 :
                             props.name==="Rooms" ? 120 : 
+                            props.name==="Amenities" ? 210 :
                             160}, 
                 onMouseEnter: popoverEnter, onMouseLeave: popoverLeave}}
                 disableScrollLock={true}
