@@ -1,23 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+
+import Dashboard from './components/layout/Dashboard';
 
 function App() {
+
+  var head = document.getElementsByTagName('head')[0];
+  var insertBefore = head.insertBefore;
+  head.insertBefore = function (newElement, referenceElement) {
+      if (newElement.href && newElement.href.indexOf('//fonts.googleapis.com/css?family=Roboto') > -1) {
+          return;
+      }
+      insertBefore.call(head, newElement, referenceElement);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Dashboard /> 
     </div>
   );
 }
