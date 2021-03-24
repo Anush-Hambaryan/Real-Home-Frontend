@@ -63,7 +63,7 @@ function ListingForm(props) {
         }
     };
 
-    Geocode.setApiKey("AIzaSyDrQozQbHcgDzFM0mGzCEmhFDCaBiqn1XU");
+    Geocode.setApiKey("API_KEY");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
