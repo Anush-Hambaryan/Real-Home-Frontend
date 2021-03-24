@@ -1,80 +1,77 @@
-import React, {useState, useContext} from 'react';
-import { useMediaQuery, useTheme, Grid, Paper, Button,  FormControl,  makeStyles, TextField, FormLabel, Divider, Typography} from '@material-ui/core';
+import React, { useState, useContext } from "react";
+import { useMediaQuery, useTheme, Grid, Paper, Button,  FormControl,  makeStyles, TextField, FormLabel, Divider, Typography } from "@material-ui/core";
 import Geocode from "react-geocode";
-import ImageUpload from './listingFormElements/ImageUpload';
-import Amenities from './listingFormElements/Amenities';
-import SelectField from './listingFormElements/SelectField';
-import {ListingContext} from './ListingFormWrapper';
-import {CacheContext} from './../layout/Dashboard'
-import axios from 'axios';
-import ListingImageEditGallery from './myListingsElements/ListingImageEditGallery';
-import {SelectFieldOptions} from './listingFormElements/SelectFieldOptions'
-import Message from './listingFormElements/Message';
-const Compress = require('compress.js')
+import ImageUpload from "./listingFormElements/ImageUpload";
+import Amenities from "./listingFormElements/Amenities";
+import SelectField from "./listingFormElements/SelectField";
+import { ListingContext } from "./ListingFormWrapper";
+import { CacheContext } from "./../layout/Dashboard";
+import axios from "axios";
+import ListingImageEditGallery from "./myListingsElements/ListingImageEditGallery";
+import { SelectFieldOptions } from "./listingFormElements/SelectFieldOptions";
+import Message from "./listingFormElements/Message";
+const Compress = require("compress.js");
 
 
 const useStyles = makeStyles((theme) => ({
     root: {
         margin: 10, 
         padding: 30,
-        [theme.breakpoints.down('xs')]: {
+        [theme.breakpoints.down("xs")]: {
             padding: 20, 
-          },
+        },
     },
     marginControl: {
-      marginBottom: theme.spacing(1),
-      marginTop: theme.spacing(1),
-    },
-    formControl: {
-        minWidth: 240,  
-        [theme.breakpoints.between('sm', 'sm')]: {
-            minWidth: 200,
-          },
-        [theme.breakpoints.down('xs')]: {
-            minWidth: 200,
-          },
         marginBottom: theme.spacing(1),
         marginTop: theme.spacing(1),
     },
-    }));
+    formControl: {
+        minWidth: 240,  
+        [theme.breakpoints.between("sm", "sm")]: {
+            minWidth: 200,
+        },
+        [theme.breakpoints.down("xs")]: {
+            minWidth: 200,
+        },
+        marginBottom: theme.spacing(1),
+        marginTop: theme.spacing(1),
+    },
+}));
 
 
 function ListingForm(props) {
     const classes = useStyles();
-    const listingContext = useContext(ListingContext)
-    const cacheContext = useContext(CacheContext)
+    const listingContext = useContext(ListingContext);
+    const cacheContext = useContext(CacheContext);
 
     const [selectedImages, setSelectedImages] = useState([]);
     const [postImages, setPostImages] = useState([]);
-    const [errors, setErrors] = useState({})
-    const [postedSuccessfully, setPostedSuccessfully] = useState(false)
-    const [submitting, setSubmitting] = useState(false)
+    const [errors, setErrors] = useState({});
+    const [postedSuccessfully, setPostedSuccessfully] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
    
-
-    const handleChange = (e) => {
-        
-        if(e.target.files) {
-            errors.images && setErrors({...errors, images: ""})
+    const handleChange = (e) => {  
+        if (e.target.files) {
+            errors.images && setErrors({...errors, images: ""});
             const fileArray = Array.from(e.target.files).map(file => URL.createObjectURL(file));
             setSelectedImages([...selectedImages, ...fileArray]);
-            setPostImages((prevImages) => prevImages.concat(Array.from(e.target.files)))
-        } else if (e.target.type !== 'file') {
-        const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
-        listingContext.dispatch({property: e.target.name, value: value});
-        setErrors({...errors, [e.target.name]: ""});
-    }
+            setPostImages((prevImages) => prevImages.concat(Array.from(e.target.files)));
+        } else if (e.target.type !== "file") {
+            const value = e.target.type === "checkbox" ? e.target.checked : e.target.value;
+            listingContext.dispatch({property: e.target.name, value: value});
+            setErrors({...errors, [e.target.name]: ""});
+        }
     };
-
 
     Geocode.setApiKey("AIzaSyDrQozQbHcgDzFM0mGzCEmhFDCaBiqn1XU");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setSubmitting(true)
+        setSubmitting(true);
         
-        let formdata = new FormData()
+        let formdata = new FormData();
         for (const property in listingContext.listing) {
-            formdata.append(property, listingContext.listing[property])
+            formdata.append(property, listingContext.listing[property]);
         }
         
         const address = `${listingContext.listing.street_building}, ${listingContext.listing.district}, Yerevan, Armenia`;
@@ -86,85 +83,83 @@ function ListingForm(props) {
             },
             (error) => {
               console.error(error);
-            }
-          );
+            });
 
-        const compress = new Compress()
-        
+        const compress = new Compress();
         await compress.compress(postImages, {
-            size: 0.5, 
-            quality: .8, 
-            maxWidth: 2300,
-            maxHeight: 1470, 
-            resize: true,
+                size: 0.5, 
+                quality: .8, 
+                maxWidth: 2300,
+                maxHeight: 1470, 
+                resize: true,
             }).then((resizedImages) => {
-                console.log(resizedImages)
                 resizedImages.forEach((image, index) => {
-                    const base64str = image.data
-                    const imgExt = image.ext
-                    const file = Compress.convertBase64ToFile(base64str, imgExt)
-                    formdata.append(`image${index}`, file)
-                }) 
-            })
+                    const base64str = image.data;
+                    const imgExt = image.ext;
+                    const file = Compress.convertBase64ToFile(base64str, imgExt);
+                    formdata.append(`image${index}`, file);
+                });
+            });
 
-        const token = localStorage.getItem('token')
-        props.editDialogOpen ? axios.put(`/listings/${listingContext.listing.id}/`, formdata, {
+        const token = localStorage.getItem("token");
+        props.editDialogOpen 
+        ? axios.put(`/listings/${listingContext.listing.id}/`, formdata, {
             headers: {
-              'Authorization': `Token ${token}`,
-              'Content-Type': 'multipart/form-data'
+              "Authorization": `Token ${token}`,
+              "Content-Type": "multipart/form-data"
             }
           })
           .then(response => {
-            listingContext.dispatch({property: 'to_delete', value: ""});
+            listingContext.dispatch({property: "to_delete", value: ""});
             setPostImages([]);
             if (response.statusText === "OK") {
                 props.setData(prev => {
                     return prev.map((listing, index) => {
                         if (index === props.index ) {
-                            return response.data 
+                            return response.data;
                         } else {
-                            return listing
+                            return listing;
                         }
-                    })
-                })
+                    });
+                });
             }
             cacheContext.setCacheReset(true);
-            props.setEditDialogOpen(false)
+            props.setEditDialogOpen(false);
             })
-        .catch(error => {
-            setErrors(error.response.data);
-            setSubmitting(false)
-        }) :
-          axios.post('/listings/', formdata, {
+            .catch(error => {
+                setErrors(error.response.data);
+                setSubmitting(false);
+            })
+        :  axios.post("/listings/", formdata, {
             headers: {
-              'Authorization': `Token ${token}`,
-              'Content-Type': 'multipart/form-data'
+              "Authorization": `Token ${token}`,
+              "Content-Type": "multipart/form-data"
             }
-          })
-        .then(response => {
+            })
+            .then(response => {
             if (response.status === 201) {
                 for (const property in listingContext.listing) {
                     listingContext.dispatch({
                         property: property, 
                         value: typeof(listingContext.listing[property]) === "boolean" ? false :
-                                property === "to_delete" ? [] : ''
+                                property === "to_delete" ? [] : ""
                     });
                 }
                 setSelectedImages([]);
-                setSubmitting(false)
+                setSubmitting(false);
                 setPostedSuccessfully(true);
                 cacheContext.setCacheReset(true); 
             }
-        })
-        .catch(error => {
-          setErrors(error.response.data);
-          setSubmitting(false)
-        })
+            })
+            .catch(error => {
+                setErrors(error.response.data);
+                setSubmitting(false);
+            })
     }
 
     const theme = useTheme();
-    const matchesLg = useMediaQuery(theme.breakpoints.up('lg'));
-    const matchesSm = useMediaQuery(theme.breakpoints.between('sm', 'sm'));
+    const matchesLg = useMediaQuery(theme.breakpoints.up("lg"));
+    const matchesSm = useMediaQuery(theme.breakpoints.between("sm", "sm"));
 
     return (
         <Paper className={classes.root} elevation={4}>
@@ -202,7 +197,7 @@ function ListingForm(props) {
                 <Grid item xs={12} sm={6} md={4} lg={3} >
                     <Typography component="div" variant="overline" color="primary"> Amenities </Typography>
                     <FormControl className={classes.marginControl}>
-                        <FormLabel>Please  select all amenities that apply</FormLabel>
+                        <FormLabel style={{ marginBottom: 8 }}>Please  select all amenities that apply</FormLabel>
                             <Amenities handleChange={handleChange} />
                         </FormControl> 
                 </Grid>
@@ -222,7 +217,7 @@ function ListingForm(props) {
             <Button variant="contained" color="primary" onClick={ handleSubmit } > {props.editDialogOpen ? "Edit Listing" : "Submit Listing" }</Button>    
             </Grid>
         </Paper>           
-    )
+    );
 }
 
-export default ListingForm
+export default ListingForm;

@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react';
-import { Snackbar, makeStyles, CircularProgress} from '@material-ui/core';
-import MuiAlert from '@material-ui/lab/Alert';
+import React, { useState, useEffect } from "react";
+import { Snackbar, makeStyles, CircularProgress } from "@material-ui/core";
+import MuiAlert from "@material-ui/lab/Alert";
 
 
 function Alert(props) {
@@ -9,41 +9,45 @@ function Alert(props) {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '100%',
-    '& > * + *': {
+    width: "100%",
+    "& > * + *": {
       marginTop: theme.spacing(1),
     },
   },
 }));
 
-export default function Message(props) {
+function Message(props) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    setOpen(true)
+    setOpen(true);
   }, [])
 
   const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     setOpen(false);
   };
 
   return (
-      <div className={classes.root}>
-        <Snackbar 
-          style={{bottom: props.editMode && 70}}
-          open={open} 
-          autoHideDuration={!props.submitting ? 6000 : null} 
-          onClose={handleClose}>
-          {props.submitting ? 
-          <CircularProgress /> :
-          <Alert onClose={handleClose} severity="success">
+    <div className={classes.root}>
+      <Snackbar 
+        style={{ bottom: props.editMode && 70 }}
+        open={open} 
+        autoHideDuration={!props.submitting ? 6000 : null} 
+        onClose={handleClose}
+      >
+        {props.submitting 
+        ? <CircularProgress /> 
+        : <Alert onClose={handleClose} severity="success">
             Listing posted successfully!
-          </Alert>}
-        </Snackbar>
-      </div>
+          </Alert>
+        }
+      </Snackbar>
+    </div>
   );
 }
+
+export default Message;

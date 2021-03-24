@@ -1,14 +1,14 @@
-import React from 'react'
-import {Button} from '@material-ui/core';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import React from "react";
+import { Button } from "@material-ui/core";
+import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 
 function ImageUpload(props) {
 
     return (
-        <div style={{ marginTop: '5px'}}>
+        <div style={{ marginTop: "5px" }}>
             <input
                 accept="image/*"
-                style={{ display: 'none' }}
+                style={{ display: "none" }}
                 multiple
                 type="file"
                 id="button-file"
@@ -18,9 +18,10 @@ function ImageUpload(props) {
                 <Button variant="outlined" color="primary" component="span" startIcon={<CloudUploadIcon />} >
                     Add images
                 </Button>
-            </label> <br/>
+            </label>
+            <br />
         </div>
-    )
+    );
 }
 
-export default ImageUpload
+export default ImageUpload;

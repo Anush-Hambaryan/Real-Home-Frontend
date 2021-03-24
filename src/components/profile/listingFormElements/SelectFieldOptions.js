@@ -1,15 +1,14 @@
 
 const year_built = () => {
-    const date = new Date().getFullYear()
-    let year_built = []
+    const date = new Date().getFullYear();
+    let year_built = [];
     for (let i = date; i > 1899; i--) {
-        year_built.push(i)
+        year_built.push(i);
     }
-    return year_built
-}
+    return year_built;
+};
 
 export const SelectFieldOptions = {
-    
     transaction: ['Rent', 'Sale'],
     rent_period: ['Daily', 'Monthly'],
     currency: ['AMD', 'USD', 'RUB'],

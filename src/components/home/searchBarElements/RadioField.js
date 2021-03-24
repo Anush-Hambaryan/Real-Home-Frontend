@@ -1,5 +1,5 @@
-import React from 'react';
-import { makeStyles, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio} from '@material-ui/core';
+import React from "react";
+import { makeStyles, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     formControl: { 
@@ -21,22 +21,39 @@ const useStyles = makeStyles((theme) => ({
         marginRight: 9,
         padding: 0,
     }
-    }));
+}));
 
 
 function RadioField(props) {
-    const classes = useStyles()
+    const classes = useStyles();
 
     return (
         <FormControl component="fieldset" className={classes.formControl} >
             <FormLabel component="legend" className={classes.formLabel}>{props.label}</FormLabel>
-            <RadioGroup row={props.name === "currency" ? true : false} variant="outlined" aria-label="transaction-type" name={props.name} type="radio" value={props.value} onClick={props.handleChange}>
-                
-                {props.options.map(option => (<FormControlLabel style={{margin: props.name !== "currency" ? -3 : 6}} labelPlacement={props.name === "currency" ? "bottom" : "end"} value={option} key={option} className={classes.formControlLabel} control={<Radio color="primary" size="small" />} label={option} />))}
-           
+            <RadioGroup 
+                row={props.name === "currency" ? true : false} 
+                variant="outlined" 
+                aria-label="transaction-type" 
+                name={props.name} 
+                type="radio" 
+                value={props.value} 
+                onClick={props.handleChange}
+            >
+                {props.options.map(
+                    option => (
+                    <FormControlLabel 
+                        style={{margin: props.name !== "currency" ? -3 : 6}} 
+                        labelPlacement={props.name === "currency" ? "bottom" : "end"} 
+                        value={option} 
+                        key={option} 
+                        className={classes.formControlLabel} 
+                        control={<Radio color="primary" size="small" />} 
+                        label={option} 
+                    />
+                ))}
             </RadioGroup>
         </FormControl>
-    )
+    );
 }
 
-export default RadioField
+export default RadioField;

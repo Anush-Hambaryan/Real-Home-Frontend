@@ -1,5 +1,5 @@
-import React from 'react';
-import {Typography, useTheme, useMediaQuery, makeStyles, FormControl, FormLabel, FormGroup, Box} from '@material-ui/core';
+import React from "react";
+import { Typography, useTheme, useMediaQuery, makeStyles, FormControl, FormLabel, FormGroup, Box } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -23,30 +23,35 @@ const useStyles = makeStyles((theme) => ({
 
 
 function FieldWrapper(props) {
-    const classes = useStyles()
+    const classes = useStyles();
 
     const theme = useTheme();
-    const matchesExtraSmall = useMediaQuery(theme.breakpoints.down('xs'));
+    const matchesExtraSmall = useMediaQuery(theme.breakpoints.down("xs"));
 
     if (matchesExtraSmall ) {
         return (
-            <Box className={classes.formControl} style={{marginBottom: (props.label === "Year Built"|| props.label === "Area (㎡)") && matchesExtraSmall && theme.spacing(2)}}>
+            <Box 
+            className={classes.formControl} 
+            style={{ 
+                marginBottom: (props.label === "Year Built" || props.label === "Area (㎡)") && matchesExtraSmall && theme.spacing(2) 
+            }}
+            >
                 <Typography color="textSecondary" className={classes.formLabelXs}>{props.label}</Typography> 
-                    <FormGroup row={props.label !== "Amenities" && true} style={{paddingLeft : props.label === "Amenities" && 10}}>
+                <FormGroup row={props.label !== "Amenities" && true} style={{ paddingLeft : props.label === "Amenities" && 10 }}>
                     {props.children}
-                    </FormGroup>
+                </FormGroup>
             </Box>
-        )
+        );
     } else {
         return ( 
             <FormControl component="fieldset" className={classes.formControl} >
                 <FormLabel component="legend" className={classes.formLabel}>{props.label}</FormLabel> 
-                    <FormGroup row={props.label !== "Amenities" && true} style={{paddingLeft : props.label === "Amenities" && 10}}>
+                <FormGroup row={props.label !== "Amenities" && true} style={{ paddingLeft : props.label === "Amenities" && 10 }}>
                     {props.children}
-                    </FormGroup>
+                </FormGroup>
             </FormControl>
-        )
+        );
     }
 }
 
-export default FieldWrapper
+export default FieldWrapper;
